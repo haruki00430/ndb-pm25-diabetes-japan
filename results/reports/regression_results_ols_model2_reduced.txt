@@ -1,0 +1,53 @@
+OLS回帰分析結果（多重共線性解決版）
+============================================================
+
+従属変数: Diabetes_Prescription_Per100k
+独立変数: PM25_Mean, Aging_Rate, Obesity_Rate, Exercise_Rate, GDP_Per_Capita
+サンプルサイズ: 47
+[注] Smoking_Rateを除外（Obesity_Rateとの多重共線性解消のため）
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.291
+Model:                            OLS   Adj. R-squared:                  0.204
+Method:                 Least Squares   F-statistic:                     3.359
+Date:                Thu, 12 Mar 2026   Prob (F-statistic):             0.0124
+Time:                        08:47:13   Log-Likelihood:                -619.71
+No. Observations:                  47   AIC:                             1251.
+Df Residuals:                      41   BIC:                             1263.
+Df Model:                           5                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const      -6.651e+05    1.9e+06     -0.350      0.728   -4.51e+06    3.17e+06
+x1          6884.1101    1.9e+04      0.362      0.719   -3.15e+04    4.53e+04
+x2          3.208e+04   8065.011      3.978      0.000    1.58e+04    4.84e+04
+x3         -8612.1677   3.81e+04     -0.226      0.822   -8.55e+04    6.83e+04
+x4          9253.1276   2.98e+04      0.310      0.758    -5.1e+04    6.95e+04
+x5           600.4830    541.656      1.109      0.274    -493.414    1694.380
+==============================================================================
+Omnibus:                        0.201   Durbin-Watson:                   1.892
+Prob(Omnibus):                  0.904   Jarque-Bera (JB):                0.337
+Skew:                          -0.137   Prob(JB):                        0.845
+Kurtosis:                       2.688   Cond. No.                     3.00e+04
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large,  3e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+============================================================
+診断統計量
+============================================================
+R-squared: 0.2906
+Adjusted R-squared: 0.2041
+F-statistic: 3.3594 (p=1.2361e-02)
+AIC: 1251.42
+BIC: 1262.52
+Durbin-Watson: 1.8920
+
+正規性検定（Shapiro-Wilk）:
+  W = 0.9932, p = 0.9942
+  -> 残差は正規分布に従う（p > 0.05）

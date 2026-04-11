@@ -1,0 +1,207 @@
+﻿# Configuration for PM2.5 and Diabetes Ecological Study
+# Project: NDB_XXX_PM25_diabetes
+# Created: 2026-03-11
+
+# Experiment Mode
+experiment_mode: false  # Set to true for dummy data testing, false for real NDB/Air pollution data
+
+# Project Metadata
+project_name: "PM25_Diabetes_Ecological_Study"
+project_id: "NDB_XXX_PM25_diabetes"
+target_theme: "PM2.5曝露と糖尿病関連指標の都道府県別生態学的研究"
+
+# Data Sources
+data_sources:
+  air_pollution: "02_Data/raw/Air_Pollution"  # NIES atmospheric monitoring data
+  ndb_checkup: "07_特定健診 検査"              # HbA1c examination data (FY2022)
+  ndb_prescription: "05_処方薬"                # Diabetes medication data (FY2023)
+
+# Exposure Variable: PM2.5
+exposure_variable:
+  name: "PM2.5年平均濃度"
+  description: "微小粒子状物質（PM2.5）の都道府県別年平均濃度"
+  unit: "μg/m3"
+  variable_name: "pm25_mean"
+  data_years: [2022, 2023]  # Two-year average to match NDB data years
+  aggregation_method: "mean"  # Mean of all measurement stations in each prefecture
+  file_pattern: "TD{year}1200.zip"  # 1200 = PM2.5 substance code
+
+# Outcome Variables
+outcome_variables:
+  hba1c:
+    name: "HbA1c平均値"
+    description: "糖化ヘモグロビン（NGSP値）の都道府県別平均値"
+    data_source: "ndb_checkup"
+    data_year: 2022  # FY2022 (Reiwa 4)
+    unit: "%"
+    variable_name: "hba1c_mean"
+    file_name: "HbA1c 都道府県別性年齢階級別分布.xlsx"
+    calculation_method: "weighted_average"  # Weighted average using strata midpoints
+    strata_midpoints:  # Midpoint values for each HbA1c stratum
+      "8.4以上": 9.0
+      "8.0以上8.4未満": 8.2
+      "6.5以上8.0未満": 7.25
+      "6.0以上6.5未満": 6.25
+      "5.6以上6.0未満": 5.8
+      "5.6未満": 5.3
+
+  diabetes_medication:
+    name: "糖尿病用剤処方量"
+    description: "糖尿病用剤（薬効分類396）の人口10万人あたり処方数量"
+    data_source: "ndb_prescription"
+    data_year: 2023  # FY2023 (Reiwa 5)
+    unit: "処方数/10万人"
+    variable_name: "dm_drug_per_100k"
+    drug_classification: 396  # 糖尿病用剤
+    file_names:
+      oral_outpatient_external: "【内服】外来（院外）_都道府県別薬効分類別数量.xlsx"
+      oral_outpatient_internal: "【内服】外来（院内）_都道府県別薬効分類別数量.xlsx"
+      oral_inpatient: "【内服】入院_都道府県別薬効分類別数量.xlsx"
+      injection: "【注射】都道府県別薬効分類別数量.xlsx"
+
+# Adjustment Variables (Confounders)
+adjustment_variables:
+  aging_rate:
+    name: "高齢化率"
+    description: "65歳以上人口割合（%）"
+    data_source: "external"
+    variable_name: "aging_rate"
+    source_note: "政府統計の総合窓口（e-Stat）人口推計 2022年"
+
+  bmi_obesity:
+    name: "BMI肥満率"
+    description: "BMI≥25の割合（%）"
+    data_source: "ndb_checkup"
+    variable_name: "bmi_obesity_rate"
+    file_name: "BMI  都道府県別性年齢階級別分布.xlsx"
+
+  smoking_rate:
+    name: "喫煙率"
+    description: "現在習慣的に喫煙している者の割合（%）"
+    data_source: "ndb_checkup"
+    variable_name: "smoking_rate"
+    file_name: "標準的な質問票（質問項目１３） 都道府県別性年齢階級別分布.xlsx"
+
+  exercise_habit:
+    name: "運動習慣率"
+    description: "1回30分以上の運動を週2回以上実施している者の割合（%）"
+    data_source: "ndb_checkup"
+    variable_name: "exercise_rate"
+    file_name: "標準的な質問票（質問項目３） 都道府県別性年齢階級別分布.xlsx"
+
+  gdp_per_capita:
+    name: "1人あたり県内総生産"
+    description: "県内総生産/人口（万円）"
+    data_source: "external"
+    variable_name: "gdp_per_capita"
+    source_note: "内閣府 県民経済計算 2022年度"
+
+# Input Paths (relative to project root)
+input_paths:
+  ndb_opendata: "02_Data/raw/NDB_OpenData/No.10"
+  air_pollution: "02_Data/raw/Air_Pollution"
+  checkup_examination: "02_Data/raw/NDB_OpenData/No.10/07_特定健診 検査/01_公費レセプトを含まないデータ/（※1）NDBの特定健診情報のうち、基本情報レコードと健診結果・問診結果情報レコードを集計したもの"
+  checkup_questionnaire: "02_Data/raw/NDB_OpenData/No.10/07_特定健診 質問票/01_公費レセプトを含まないデータ"
+  prescription: "02_Data/raw/NDB_OpenData/No.10/05_処方薬/01_公費レセプトを含まないデータ/01_処方薬（内服／外用／注射）"
+  external_stats: "02_Data/master"  # For population, GDP, etc.
+
+# Output Paths (relative to project root)
+output_paths:
+  interim: "projects/NDB_XXX_PM25_diabetes/data/interim"
+  results: "projects/NDB_XXX_PM25_diabetes/results"
+  figures: "projects/NDB_XXX_PM25_diabetes/results/figures"
+  reports: "projects/NDB_XXX_PM25_diabetes/results/reports"
+  analysis: "projects/NDB_XXX_PM25_diabetes/analysis"
+
+# Analysis Parameters
+analysis_parameters:
+  # Geographic unit
+  geographic_unit: "prefecture"  # 47 prefectures
+  n_prefectures: 47
+
+  # Age and sex standardization
+  age_standardization: true
+  age_groups: ["40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74"]
+  target_sex: "both"  # "male", "female", or "both"
+
+  # Statistical test settings
+  alpha: 0.05  # Significance level
+  correlation_method: "pearson"  # or "spearman"
+
+  # Regression model settings
+  regression_models: ["OLS", "SLM", "SEM"]  # OLS, Spatial Lag Model, Spatial Error Model
+  check_multicollinearity: true  # Calculate VIF
+  vif_threshold: 10.0  # VIF > 10.0 indicates multicollinearity
+  variable_selection:
+    method: "vif_greedy"  # VIFベースの逐次削除
+    keep_variables: ["PM25_Mean"]  # 必ず残す主要曝露
+    candidate_covariates: ["Aging_Rate", "Obesity_Rate", "Smoking_Rate", "Exercise_Rate", "GDP_Per_Capita"]
+    min_covariates: 2  # これ未満には削減しない
+    max_iterations: 10
+    output_suffix: "vifselect"
+  # Spatial analysis settings
+  spatial_weight_type: "queen"  # Queen contiguity for prefectures
+  permutations: 999  # For Moran's I significance test
+  robust_se: true  # Use robust standard errors
+
+  # Sensitivity analysis
+  sensitivity_analysis:
+    pm25_aggregation: ["mean", "median"]  # Test both mean and median
+    hba1c_midpoint_scenarios:  # Test different midpoint assumptions
+      conservative:  # Conservative (lower extreme values)
+        "8.4以上": 8.7
+        "5.6未満": 5.3
+      moderate:  # Moderate (current setting)
+        "8.4以上": 9.0
+        "5.6未満": 5.3
+      liberal:  # Liberal (higher extreme values)
+        "8.4以上": 10.0
+        "5.6未満": 5.0
+
+# Visualization Settings
+visualization:
+  japanese_font: "Meiryo"  # Auto-detected on Windows
+  figure_format: "png"
+  dpi: 300
+  color_scheme: "viridis"  # Colormap for choropleth maps
+  watermark: true  # Add watermark for non-production figures (if experiment_mode=true)
+
+  # Map settings
+  prefecture_geojson: "02_Data/master/japan_prefectures.geojson"  # If available
+  map_projection: "mercator"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_to_file: true
+  log_path: "projects/NDB_XXX_PM25_diabetes/analysis/logs"
+
+# Reproducibility
+reproducibility:
+  random_seed: 42
+  save_intermediate_data: true  # Save intermediate results for debugging
+  data_versioning: true  # Track data versions
+
+# References (for citation in manuscript)
+references:
+  key_papers:
+    - "Zhao CN et al. (2019). The effects of dietary nutrition on sleep and sleep disorders. Mediators Inflamm. 2019:3142874."
+    - "Rajagopalan S et al. (2018). Air pollution and cardiovascular disease. J Am Coll Cardiol. 72(17):2054-2070."
+    - "Yang BY et al. (2020). Ambient air pollution and diabetes: A systematic review and meta-analysis. Environ Res. 180:108817."
+  ndb_citation: "厚生労働省 第10回NDBオープンデータ（令和5年度レセプト情報・令和4年度特定健診情報）"
+  air_pollution_citation: "国立環境研究所 大気汚染常時監測データ（2022-2023年度）"
+
+# Expected Challenges
+expected_challenges:
+  - challenge: "HbA1c階層の中央値設定の恣意性"
+    mitigation: "感度分析で複数シナリオをテスト"
+  - challenge: "測定局数の都道府県間格差"
+    mitigation: "局数を共変量として追加、またはロバスト回帰を使用"
+  - challenge: "PM2.5データ（2022-2023）とHbA1c（2022）・処方薬（2023）の年度ズレ"
+    mitigation: "2年平均を使用し、Limitations で明示"
+  - challenge: "空間的自己相関の存在"
+    mitigation: "Spatial Lag Model (SLM) / Spatial Error Model (SEM) を適用"
+  - challenge: "生態学的研究の限界（Ecological Fallacy）"
+    mitigation: "Limitations で個人レベルの因果推論ではないことを明記"
+
+

@@ -1,0 +1,142 @@
+---
+title: "PM2.5曝露と糖尿病関連指標の都道府県別生態学的研究"
+subtitle: "NDBオープンデータ × SORAMAME（47都道府県・横断生態学的研究）"
+author:
+  - name: "（著者名を記入）"
+date: last-modified
+lang: ja
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: cosmo
+  docx:
+    toc: true
+bibliography: references.bib
+link-citations: true
+---
+
+## Abstract（要約）
+
+（ここに要約を作成）
+
+- **背景**: （PM2.5と糖尿病の既知知見）
+- **目的**: 都道府県レベルでPM2.5曝露と糖尿病指標の関連を検証する。
+- **方法**: NDB Open Data No.10（特定健診HbA1c、処方薬）と環境省SORAMAME由来PM2.5（2022–2023平均）を統合し、OLS回帰で共変量調整（高齢化率、肥満率、運動習慣率、GDP等）。残差の空間的自己相関はMoran's Iで評価。
+- **結果**: PM2.5はHbA1c平均値および糖尿病用剤処方数/10万人と有意な関連を示さなかった。
+- **結論**: （ネガティブ結果の意義と慎重解釈）
+
+## Introduction（背景）
+
+### 背景
+
+（先行研究：個人レベル研究と生態学研究の位置づけ、想定される機序）
+
+### 目的
+
+本研究は、都道府県レベルの生態学的研究デザインにより、PM2.5曝露と糖尿病関連指標（HbA1c平均値、糖尿病用剤処方数/10万人）の関連を検証する。
+
+## Methods（方法）
+
+### 研究デザイン・解析単位
+
+- 横断的生態学的研究
+- 解析単位: 47都道府県
+
+### データソース
+
+- **PM2.5**: 環境省SORAMAME（2022–2023年の2年間平均）
+- **HbA1c**: NDB Open Data No.10（特定健診・検査）
+- **糖尿病用剤処方**: NDB Open Data No.10（処方薬、薬効分類396、人口10万人対）
+- **共変量**: 高齢化率、肥満率、運動習慣率、GDP/人（出典は本文に明記して再現可能にする）
+
+### 変数定義
+
+- **曝露変数**: PM2.5年平均濃度（μg/m³）
+- **アウトカム**:
+  - HbA1c平均値（%）
+  - 糖尿病用剤処方数/10万人
+- **共変量（例）**: Aging_Rate, Obesity_Rate, Exercise_Rate, GDP_Per_Capita
+
+### 統計解析
+
+- Pearson相関（探索）
+- OLS回帰（共変量調整）
+- 多重共線性（VIF）と診断統計量
+- 残差正規性（Shapiro-Wilk）
+- 残差の空間的自己相関（Moran's I; Queen contiguity）
+- 感度分析（測定局数しきい値、Cook's distance、都市/農村層別）
+
+### 再現性（コード・出力）
+
+Phase 7は以下を実行して図表とサマリーレポートを生成する。
+
+```bash
+cd projects/NDB_XXX_PM25_diabetes
+python analysis/07_final_report.py
+```
+
+## Results（結果）
+
+### 記述統計・相関
+
+（`../results/reports/descriptive_statistics.csv` 等の要約）
+
+### 回帰分析
+
+（主要モデルの推定結果と解釈、必要なら縮約モデル・感度分析も併記）
+
+### Figure
+
+#### Figure 1: 地理的分布（Choropleth; 生成できた場合）
+
+![](../results/figures/choropleth_pm25.png){fig-alt="PM2.5 choropleth"}
+![](../results/figures/choropleth_hba1c.png){fig-alt="HbA1c choropleth"}
+![](../results/figures/choropleth_dm_rx.png){fig-alt="Diabetes medication choropleth"}
+
+#### Figure 2: 散布図 + 回帰直線（95%CI）
+
+![](../results/figures/scatter_pm25_hba1c.png){fig-alt="Scatter PM2.5 vs HbA1c"}
+![](../results/figures/scatter_pm25_dm_rx.png){fig-alt="Scatter PM2.5 vs diabetes medication"}
+
+#### Figure 3: 残差診断
+
+![](../results/figures/diagnostics_hba1c.png){fig-alt="Diagnostics HbA1c model"}
+![](../results/figures/diagnostics_dm_rx.png){fig-alt="Diagnostics diabetes medication model"}
+
+#### Figure 4: 測定局数（曝露評価の偏在）
+
+![](../results/figures/stations_by_prefecture.png){fig-alt="Stations by prefecture"}
+
+### Table 1
+
+（上位/下位10都道府県の表。`../results/reports/table1_top_bottom.csv` を使用）
+
+## Discussion（考察）
+
+（HANDOVER.md の Phase 7a Must Do を満たす形で、ここを厚く書く）
+
+### 主要所見のまとめ
+
+### 先行研究との比較
+
+### 関連が見られなかった可能性（必須）
+
+- 生態学的誤謬
+- 曝露評価（測定局偏在、2年平均、測定誤差）
+- 多重共線性と係数推定の不安定性
+- PM2.5単独効果の検出力限界（Type II error）
+- 未測定交絡（食生活、医療アクセス等）
+
+### 強み
+
+### 限界
+
+### 今後の研究
+
+## Conclusion（結論）
+
+（結論を簡潔に）
+
+## References
+
