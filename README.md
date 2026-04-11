@@ -1,3 +1,5 @@
+﻿> **正本リポジトリ（GitHub Private）：** https://github.com/haruki00430/NDB_XXX_PM25_diabetes
+
 # NDB_XXX_PM25_diabetes
 
 **プロジェクト名**: PM2.5曝露と糖尿病関連指標の都道府県別生態学的研究
