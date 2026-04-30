@@ -19,6 +19,8 @@ format:
 resource-path:
   - "."
   - ".."
+bibliography: ../references.bib
+csl: ../vancouver.csl
 ---
 
 ---
@@ -46,6 +48,9 @@ Across prefectures (*N* = 47), the mean PM2.5 concentration was 8.55 ± 1.12 μg
 In this prefecture-level ecological analysis using Japanese public administrative and environmental monitoring data, ambient PM2.5 exposure was not detectably associated with diabetes-related indicators. These null findings were robust to multiple sensitivity analyses, but interpretation should account for potential exposure measurement error, residual confounding, multicollinearity among covariates, and limited power to detect small partial effects at *N* = 47.
 
 **Keywords**: PM2.5; diabetes; HbA1c; prescriptions; ecological study; Japan; NDB Open Data
+
+
+**Keywords:** diabetes; PM2.5; ecological study; Japan; health insurance claims
 
 ---
 
