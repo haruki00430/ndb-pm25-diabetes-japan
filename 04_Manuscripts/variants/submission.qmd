@@ -1,0 +1,17 @@
+---
+title: "Ambient PM2.5 Exposure and Diabetes-Related Indicators Across Japanese Prefectures: A Cross-Sectional Ecological Study Using NDB Open Data"
+format:
+  docx:
+    toc: false
+    number-sections: false
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+bibliography: ../references.bib
+csl: ../vancouver.csl
+---
+
+{{< include ../core/manuscript_core.qmd >}}
+
+{{< include ../includes/submission_journal_notes.qmd >}}
