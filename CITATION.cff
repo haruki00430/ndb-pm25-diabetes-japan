@@ -9,7 +9,7 @@ date-released: 2026-06-29
 license: MIT
 url: "https://github.com/haruki00430/ndb-pm25-diabetes-japan"
 repository-code: "https://github.com/haruki00430/ndb-pm25-diabetes-japan"
-doi: 10.5281/zenodo.20713830
+doi: TBD  # Will be updated after GitHub release triggers Zenodo archiving
 abstract: >-
   Reproducible code and prefecture-level aggregated data (N = 47) for an
   ecological study examining ambient PM2.5 exposure and diabetes-related
@@ -53,4 +53,4 @@ preferred-citation:
   journal: "Public Health"
   year: 2026
   notes: "Manuscript under review; update journal volume/pages and DOI when published."
-  doi: 10.5281/zenodo.20713830
+  doi: TBD  # Will be updated after GitHub release triggers Zenodo archiving

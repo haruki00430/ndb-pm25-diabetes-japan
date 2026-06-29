@@ -9,7 +9,7 @@
 
 **Manuscript status:** Under review at *Public Health* (Elsevier / Royal Society for Public Health), submitted 2026-06-29  
 **Repository:** https://github.com/haruki00430/ndb-pm25-diabetes-japan  
-**Zenodo DOI:** https://doi.org/10.5281/zenodo.20713830
+**Zenodo DOI:** *(will be assigned after GitHub release — see below)*
 
 ---
 
@@ -143,7 +143,7 @@ Public Health. 2026 (under review).
 
 See **[CITATION.cff](CITATION.cff)** for machine-readable metadata.
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20713830.svg)](https://doi.org/10.5281/zenodo.20713830)
+*(DOI badge will appear here after Zenodo release)*
 
 ---
 
