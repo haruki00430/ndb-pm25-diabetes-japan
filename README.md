@@ -1,276 +1,164 @@
-﻿> **正本リポジトリ（GitHub Private）：** https://github.com/haruki00430/NDB_XXX_PM25_diabetes
+> **Repository:** https://github.com/haruki00430/ndb-pm25-diabetes-japan  
+> **Reproduction:** [`REPRODUCE.md`](REPRODUCE.md) · [`DATA_SOURCES.md`](DATA_SOURCES.md) · [`analysis/README.md`](analysis/README.md) · [`CITATION.cff`](CITATION.cff)
 
-# NDB_XXX_PM25_diabetes
+# Ecological Detectability Boundaries in Nationwide Administrative Data
 
-**プロジェクト名**: PM2.5曝露と糖尿病関連指標の都道府県別生態学的研究
-**開始日**: 2026-03-11
-**ステータス**: 解析パイプライン実行済・レポート・Quarto 原稿あり（2026-04-05 リポジトリ照合）
+## Lessons from a PM2.5-Diabetes Case Study in Japan
 
-**リポジトリ照合メモ（2026-04-05）**: `analysis/01`〜`07` 系スクリプトおよび `06b–06d` が存在。`data/interim/` に PM2.5・HbA1c・処方・統合 CSV。`results/reports/` に記述統計・回帰・Moran's I・感度分析・検定力等の出力。`04_Manuscripts/` に複数 `.qmd`（試行原稿・`_final` 等）。**メインのレンダリング例**は `04_Manuscripts/README.md` の `Manuscript_PM25_diabetes.qmd` を参照。旧 README の「Phase 0 のみ」は実体と不一致だったため本欄を優先する。
+**論文タイトル（日本語）**: 全国行政データにおける生態学的検出可能性の境界——日本における PM2.5 と糖尿病指標を事例として
 
----
-
-## プロジェクト概要
-
-### 研究テーマ
-大気汚染物質（PM2.5）の長期曝露が糖尿病発症・血糖コントロールに与える影響を、都道府県レベルの生態学的研究デザインで検証する。
-
-### 主要な仮説
-- **仮説1**: PM2.5年平均濃度が高い都道府県ほど、HbA1c平均値が高い
-- **仮説2**: PM2.5年平均濃度が高い都道府県ほど、糖尿病用剤の処方量が多い
-
-### 研究デザイン
-- **デザイン**: 生態学的研究（Ecological study）
-- **地理単位**: 都道府県別（N=47）
-- **解析手法**:
-  - OLS回帰分析（共変量調整）
-  - 空間回帰分析（Spatial Lag Model / Spatial Error Model）
-  - 感度分析（HbA1c中央値設定、PM2.5集計方法）
+**Manuscript status:** Under review at *Public Health* (Elsevier / Royal Society for Public Health), submitted 2026-06-29  
+**Repository:** https://github.com/haruki00430/ndb-pm25-diabetes-japan  
+**Zenodo DOI:** https://doi.org/10.5281/zenodo.20713830
 
 ---
 
-## データソース
+## Abstract / 研究概要
 
-### 1. 曝露変数: PM2.5年平均濃度
-- **データ提供**: 国立環境研究所「大気汚染常時監視データ」
-- **対象年度**: 2022-2023年度（2年間平均）
-- **単位**: μg/m³
-- **集計方法**: 都道府県内の全測定局の年平均値を算術平均
+Established environmental risks may become statistically undetectable when studied with aggregated administrative data. Using the association between ambient PM2.5 and diabetes-related indicators across Japan's 47 prefectures as an empirical case, this study introduces and operationalises the concept of an **ecological detectability boundary**: a confluence of six co-occurring characteristics—narrow exposure contrast, spatial aggregation, outcome aggregation, exposure measurement error, multicollinearity among confounders, and a small sample of *N* = 47 geographic units—that can jointly suppress a meaningful signal below the threshold of statistical detection.
 
-### 2. アウトカム変数
-
-#### 2.1 HbA1c平均値
-- **データ提供**: 厚生労働省 第10回NDBオープンデータ（特定健診 検査）
-- **対象年度**: 令和4年度（2022年4月～2023年3月）
-- **単位**: %（NGSP値）
-- **計算方法**: HbA1c階層別人数から加重平均を算出
-
-#### 2.2 糖尿病用剤処方量
-- **データ提供**: 厚生労働省 第10回NDBオープンデータ（処方薬）
-- **対象年度**: 令和5年度（2023年4月～2024年3月）
-- **薬効分類**: 396（糖尿病用剤）
-- **単位**: 処方数/10万人
-
-### 3. 調整変数（共変量）
-- **高齢化率**: 65歳以上人口割合（%）- 政府統計e-Stat
-- **BMI肥満率**: BMI≥25の割合（%）- NDB特定健診
-- **喫煙率**: 現在習慣的に喫煙している者の割合（%）- NDB特定健診
-- **運動習慣率**: 1回30分以上の運動を週2回以上実施（%）- NDB特定健診
-- **1人あたり県内総生産**: 県内GDP/人口（万円）- 内閣府
+PM2.5 was not significantly associated with prefecture-level mean haemoglobin A1c (β = 0.00371; *p* = 0.487) or diabetes medication prescriptions per 100,000 population (β = 6,884; *p* = 0.719). These null findings persisted across six sensitivity analyses. We propose the detectability boundary as a **design-level diagnostic** for ecological analyses using administrative data.
 
 ---
 
-## ディレクトリ構造
+環境リスクは、行政集計データを用いて研究された場合、統計的に検出不可能となることがある。本研究は、日本47都道府県における大気中 PM2.5 濃度と糖尿病関連指標（HbA1c 平均値・糖尿病用剤処方数）の関連を検討し、有意な関連を認めなかった（HbA1c: β = 0.00371, *p* = 0.487; 処方数: β = 6,884, *p* = 0.719）。六つの感度分析でも結果は頑健であった。この帰無所見を「生態学的検出可能性の境界（ecological detectability boundary）」という概念的枠組みから解釈し、行政データを用いた生態学的研究のデザイン段階での診断ツールとして提案する。
+
+---
+
+## Repository structure / リポジトリ構造
 
 ```
-projects/NDB_XXX_PM25_diabetes/
-├── README.md                      # このファイル
+ndb-pm25-diabetes-japan/
+├── analysis/                  # Analysis scripts (01–07) / 解析スクリプト
+│   ├── README.md              # Script guide / スクリプト解説
+│   ├── 01_extract_pm25.py     # PM2.5 data extraction
+│   ├── 02_extract_hba1c.py    # HbA1c data extraction
+│   ├── 03_extract_diabetes_prescription.py
+│   ├── 04_integrate_data.py   # Data integration
+│   ├── 05_descriptive_statistics.py
+│   ├── 06_regression_analysis.py
+│   ├── 06b_regression_reduced_model.py
+│   ├── 06c_sensitivity_analysis.py
+│   ├── 06d_power_analysis.py
+│   └── 07_final_report.py
 ├── config/
-│   └── config.yaml                # プロジェクト設定ファイル
+│   └── config.yaml            # Project settings / プロジェクト設定
 ├── data/
-│   └── interim/                   # 中間データ（ETL後）
-│       ├── pm25_prefecture.csv            # Phase 1出力
-│       ├── hba1c_prefecture.csv           # Phase 2出力
-│       ├── diabetes_prescription.csv      # Phase 3出力
-│       └── analysis_dataset.csv           # Phase 4出力（統合データ）
-├── analysis/                      # 解析スクリプト
-│   ├── 01_extract_pm25.py                 # Phase 1
-│   ├── 02_extract_hba1c.py                # Phase 2
-│   ├── 03_extract_diabetes_prescription.py # Phase 3
-│   ├── 04_integrate_data.py               # Phase 4
-│   ├── 05_descriptive_statistics.py       # Phase 5
-│   ├── 06_regression_analysis.py          # Phase 6
-│   └── 07_visualization.py                # Phase 7
-├── results/                       # 解析結果
-│   ├── figures/                   # 図（PNG, 300dpi）
-│   │   ├── pm25_choropleth.png
-│   │   ├── hba1c_choropleth.png
-│   │   ├── correlation_heatmap.png
-│   │   ├── scatterplot_pm25_hba1c.png
-│   │   └── spatial_autocorrelation.png
-│   └── reports/                   # レポート（CSV, TXT）
-│       ├── descriptive_statistics.csv
-│       ├── correlation_matrix.csv
-│       ├── regression_results_ols.txt
-│       ├── regression_results_slm.txt
-│       └── regression_results_sem.txt
-└── docs/                          # ドキュメント
-    ├── implementation_plan.md     # 実装計画（7フェーズ）
-    ├── data_schema.md             # データスキーマ
-    └── sensitivity_analysis.md    # 感度分析の記録
+│   └── release/               # Public aggregated data (N = 47) / 公開集計データ
+│       ├── analysis_dataset_prefecture_n47.csv
+│       └── README.md          # Column dictionary / 変数辞書
+├── results/
+│   └── figures/               # Output figures (PNG, 300 dpi)
+├── 04_Manuscripts/
+│   └── submission_package_RSPH/   # Submission files / 投稿ファイル一式
+├── REPRODUCE.md               # Reproduction guide / 再現手順書
+├── DATA_SOURCES.md            # Data download instructions / データ取得先
+├── CITATION.cff               # Machine-readable citation
+├── LICENSE                    # MIT (code)
+├── LICENSE-DATA               # CC BY 4.0 (data/release/)
+└── requirements.txt           # Python dependencies
 ```
 
 ---
 
-## 実装フェーズ
+## Quick start / クイックスタート
 
-### ✅ Phase 0: プロジェクト構造作成
-- **完了日**: 2026-03-11
-- **成果物**:
-  - ディレクトリ構造作成
-  - config.yaml作成
-  - README.md作成
-
-### ✅ Phase 1: PM2.5データ抽出（スクリプト・中間出力あり）
-- **スクリプト**: `analysis/01_extract_pm25.py`
-- **入力**: `02_Data/raw/Air_Pollution/TD20221200.zip`, `TD20231200.zip`
-- **出力**: `data/interim/pm25_prefecture.csv`
-- **処理内容**:
-  1. ZIPファイル解凍
-  2. Shift-JIS → UTF-8変換
-  3. 都道府県別に測定局データを集計
-  4. 2022-2023年の2年間平均を計算
-
-### ✅ Phase 2: HbA1cデータ抽出（中間 CSV あり）
-- **スクリプト**: `analysis/02_extract_hba1c.py`
-- **入力**: NDB特定健診検査ファイル（HbA1c）
-- **出力**: `data/interim/hba1c_prefecture.csv`
-- **処理内容**:
-  1. MultiIndexヘッダーの読み込み
-  2. HbA1c階層別人数の抽出
-  3. 加重平均の計算（中央値法）
-
-### ✅ Phase 3: 糖尿病用剤データ抽出（中間 CSV あり）
-- **スクリプト**: `analysis/03_extract_diabetes_prescription.py`
-- **入力**: NDB処方薬ファイル（内服・注射）
-- **出力**: `data/interim/diabetes_prescription.csv`
-- **処理内容**:
-  1. 薬効分類396のフィルタリング
-  2. 4ファイル（外来院外・院内、入院、注射）の統合
-  3. 人口10万人あたりに標準化
-
-### ✅ Phase 4: データ統合（`analysis_dataset.csv` あり）
-- **スクリプト**: `analysis/04_integrate_data.py`
-- **入力**: Phase 1-3の出力 + 外部統計データ
-- **出力**: `data/interim/analysis_dataset.csv`
-- **処理内容**:
-  1. 都道府県コードでマージ
-  2. 共変量（高齢化率、BMI肥満率等）の追加
-  3. 欠損値の確認
-
-### ✅ Phase 5: 記述統計・探索的データ解析（EDA）（`descriptive_statistics.csv` 等あり）
-- **スクリプト**: `analysis/05_descriptive_statistics.py`
-- **出力**:
-  - `results/reports/descriptive_statistics.csv`
-  - `results/figures/correlation_heatmap.png`
-- **処理内容**:
-  1. 基本統計量の算出
-  2. 相関行列の計算
-  3. ヒストグラム・choropleth map作成
-
-### ✅ Phase 6: 回帰分析（OLS・削減モデル・Moran's I 等のレポートあり）
-- **スクリプト**: `analysis/06_regression_analysis.py`
-- **出力**:
-  - `results/reports/regression_results_ols.txt`
-  - `results/reports/regression_results_slm.txt`
-  - `results/reports/regression_results_sem.txt`
-- **処理内容**:
-  1. OLS回帰（共変量調整）
-  2. 多重共線性チェック（VIF）
-  3. 空間的自己相関テスト（Moran's I）
-  4. 空間回帰モデル（SLM/SEM）
-
-### 🔄 Phase 7: 可視化・最終レポート（`final_summary_report.md` 等あり・図フォルダは環境次第で要確認）
-- **スクリプト**: `analysis/07_visualization.py`
-- **出力**:
-  - `results/figures/scatterplot_pm25_hba1c.png`
-  - `results/figures/spatial_autocorrelation.png`
-  - `results/reports/final_summary_report.md`
-- **処理内容**:
-  1. 散布図（PM2.5 vs HbA1c/糖尿病用剤）
-  2. 空間分布図
-  3. Forest plot（回帰係数の可視化）
-  4. 最終サマリーレポート作成
-
----
-
-## 実行方法
-
-### 環境構築
 ```bash
-# 仮想環境の作成と有効化
-python -m venv .venv
-.venv\Scripts\activate  # Windows
-source .venv/bin/activate  # Mac/Linux
+git clone https://github.com/haruki00430/ndb-pm25-diabetes-japan.git
+cd ndb-pm25-diabetes-japan
 
-# 依存パッケージのインストール
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
-### 解析実行（Phase 1-7を順番に実行）
+### Minimal reproduction (no NDB download required) / 最小再現（NDBダウンロード不要）
+
 ```bash
-# 作業ディレクトリに移動
-cd projects/NDB_XXX_PM25_diabetes
-
-# Phase 1: PM2.5データ抽出
-python analysis/01_extract_pm25.py
-
-# Phase 2: HbA1cデータ抽出
-python analysis/02_extract_hba1c.py
-
-# Phase 3: 糖尿病用剤データ抽出
-python analysis/03_extract_diabetes_prescription.py
-
-# Phase 4: データ統合
-python analysis/04_integrate_data.py
-
-# Phase 5: 記述統計・EDA
-python analysis/05_descriptive_statistics.py
-
-# Phase 6: 回帰分析
+# Uses data/release/analysis_dataset_prefecture_n47.csv
 python analysis/06_regression_analysis.py
-
-# Phase 7: 可視化・最終レポート
-python analysis/07_visualization.py
+python analysis/06c_sensitivity_analysis.py
+python analysis/07_final_report.py
 ```
 
----
-
-## 主要な課題と対応策
-
-### 1. HbA1c階層の中央値設定の恣意性
-- **課題**: 「8.4以上」「5.6未満」の両端階層の中央値設定が恣意的
-- **対応**: 感度分析で3シナリオ（Conservative/Moderate/Liberal）をテスト
-
-### 2. 測定局数の都道府県間格差
-- **課題**: 東京都86局 vs 鳥取県8局など、測定局数に大きな格差
-- **対応**: 測定局数を共変量として追加、またはRobust回帰を使用
-
-### 3. データ年度のズレ
-- **課題**: PM2.5（2022-2023）、HbA1c（2022）、処方薬（2023）の年度が完全一致しない
-- **対応**: PM2.5を2年平均として使用、Limitationsセクションで明示
-
-### 4. 空間的自己相関
-- **課題**: 隣接都道府県間で類似した値を示す可能性（空間的自己相関）
-- **対応**: Moran's Iでテスト後、Spatial Lag Model (SLM) / Spatial Error Model (SEM) を適用
-
-### 5. 生態学的研究の限界（Ecological Fallacy）
-- **課題**: 都道府県レベルの関連が個人レベルの因果関係を示すとは限らない
-- **対応**: Limitationsで個人レベルの因果推論ではないことを明記
+For full pipeline instructions, see **[REPRODUCE.md](REPRODUCE.md)**.
 
 ---
 
-## 引用文献
+## Data sources / データソース
 
-### NDBデータ
-厚生労働省. 第10回NDBオープンデータ（令和5年度レセプト情報・令和4年度特定健診情報）. https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html
+| Source | Description | URL |
+|--------|-------------|-----|
+| NDB Open Data (10th edition) | HbA1c (FY2022), diabetes medication prescriptions (FY2023) | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html |
+| NIES Atmospheric Monitoring | Prefecture-level PM2.5 concentrations (FY2022–2023) | https://tenbou.nies.go.jp/download/ |
+| e-Stat / 2020 Population Census | Aging rate, population data | https://www.e-stat.go.jp/ |
+| Cabinet Office Prefectural Income | GDP per capita FY2022 | https://www.esri.cao.go.jp/jp/sna/data/data_list/kenmin/ |
+| NDB Open Data (questionnaire) | BMI obesity rate, smoking rate, exercise habit | (same NDB URL as above) |
 
-### 大気汚染データ
-国立環境研究所. 大気汚染常時監視データ（2022-2023年度）. https://tenbou.nies.go.jp/download/
-
-### 関連文献
-- Yang BY et al. (2020). Ambient air pollution and diabetes: A systematic review and meta-analysis. *Environ Res*. 180:108817.
-- Rajagopalan S et al. (2018). Air pollution and cardiovascular disease. *J Am Coll Cardiol*. 72(17):2054-2070.
-
----
-
-## ライセンス
-
-このプロジェクトは研究目的のみで使用されます。NDBオープンデータ利用規約に従い、個人を特定できる情報は一切含まれていません。
+See **[DATA_SOURCES.md](DATA_SOURCES.md)** for detailed download instructions.
 
 ---
 
-## 更新履歴
+## Key results / 主要結果
 
-- **2026-04-05**: リポジトリ実体に合わせステータス・Phase 1–7 表記を更新（旧「Phase 0 のみ」は誤記）
-- **2026-03-11**: Phase 0完了（プロジェクト構造作成）
+| Outcome | β | SE | *p* |
+|---------|---|----|-----|
+| Mean HbA1c (%) | 0.00371 | 0.00529 | 0.487 |
+| Diabetes prescriptions per 100,000 | 6,884 | 19,001 | 0.719 |
+
+Mean PM2.5: 8.55 μg/m³ (SD 1.12); range 6.18–12.7 μg/m³ across 47 prefectures.  
+No significant spatial autocorrelation (Global Moran's I not significant).  
+Null associations persisted across all six sensitivity analyses.
+
+---
+
+## Conceptual contribution / 概念的貢献
+
+This paper defines and empirically illustrates the **ecological detectability boundary**—a design-level concept identifying when administrative ecological data cannot be expected to detect an established environmental effect. The boundary is characterised by six co-occurring conditions:
+
+1. Narrow exposure contrast (σ = 1.12 μg/m³)
+2. Spatial aggregation to prefectural level
+3. Outcome aggregation (mean HbA1c; annual prescription counts)
+4. Exposure measurement error (sparse monitoring stations)
+5. Multicollinearity among socioeconomic confounders
+6. Small sample size (*N* = 47)
+
+生態学的検出可能性の境界は、行政データを用いた生態学的研究において、既知の環境的影響を検出することが期待できない条件を事前に評価するための概念的診断ツールである。
+
+---
+
+## Citation / 引用
+
+If you use this code or dataset, please cite:
+
+```
+Saito H, Ohira T. Ecological Detectability Boundaries in Nationwide
+Administrative Data: Lessons from a PM2.5-Diabetes Case Study in Japan.
+Public Health. 2026 (under review).
+```
+
+See **[CITATION.cff](CITATION.cff)** for machine-readable metadata.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20713830.svg)](https://doi.org/10.5281/zenodo.20713830)
+
+---
+
+## License / ライセンス
+
+- **Code** (`analysis/`, `config/`): [MIT License](LICENSE)
+- **Aggregated data** (`data/release/`): [CC BY 4.0](LICENSE-DATA)
+
+The raw NDB Open Data are available from the Ministry of Health, Labour and Welfare and are subject to their terms of use. No individual-level data are included in this repository.
+
+---
+
+## Authors / 著者
+
+| Name | Affiliation | ORCID |
+|------|-------------|-------|
+| Haruki Saito (corresponding) | Department of Epidemiology, Fukushima Medical University School of Medicine | [0009-0009-7890-6068](https://orcid.org/0009-0009-7890-6068) |
+| Tetsuya Ohira | Radiation Medical Science Center for the Fukushima Health Management Survey, Fukushima Medical University | [0000-0003-4532-7165](https://orcid.org/0000-0003-4532-7165) |

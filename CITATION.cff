@@ -1,0 +1,56 @@
+# Citation metadata for GitHub + Zenodo
+# Update version/doi/date-released at public release; update preferred-citation when published
+cff-version: 1.2.0
+message: "If you use this code or the deposited prefecture-level dataset, please cite as below."
+type: software
+title: "Ecological Detectability Boundaries in Nationwide Administrative Data: Replication Code and Prefecture-Level Dataset (NDB Open Data, Japan)"
+version: 1.0.0
+date-released: 2026-06-29
+license: MIT
+url: "https://github.com/haruki00430/ndb-pm25-diabetes-japan"
+repository-code: "https://github.com/haruki00430/ndb-pm25-diabetes-japan"
+doi: 10.5281/zenodo.20713830
+abstract: >-
+  Reproducible code and prefecture-level aggregated data (N = 47) for an
+  ecological study examining ambient PM2.5 exposure and diabetes-related
+  indicators across Japan's 47 prefectures using NDB Open Data (10th edition,
+  FY2022 health checkups, FY2023 medical claims) and national air-quality
+  monitoring data (FY2022–2023). The study introduces the concept of an
+  ecological detectability boundary—a confluence of six characteristics that
+  can jointly prevent detection of an established environmental effect in
+  nationwide administrative data. PM2.5 was not significantly associated with
+  prefecture-level mean HbA1c (β = 0.00371, p = 0.487) or diabetes medication
+  prescriptions (β = 6884, p = 0.719) across all sensitivity analyses.
+keywords:
+  - PM2.5
+  - air pollution
+  - diabetes
+  - ecological study
+  - ecological detectability boundary
+  - NDB Open Data
+  - Japan
+  - administrative data
+  - reproducibility
+  - ecological inference
+authors:
+  - family-names: Saito
+    given-names: Haruki
+    affiliation: "Department of Epidemiology, Fukushima Medical University School of Medicine"
+    orcid: "https://orcid.org/0009-0009-7890-6068"
+    email: haruki00430@gmail.com
+  - family-names: Ohira
+    given-names: Tetsuya
+    affiliation: "Radiation Medical Science Center for the Fukushima Health Management Survey, Fukushima Medical University"
+    orcid: "https://orcid.org/0000-0003-4532-7165"
+preferred-citation:
+  type: article
+  title: "Ecological Detectability Boundaries in Nationwide Administrative Data: Lessons from a PM2.5-Diabetes Case Study in Japan"
+  authors:
+    - family-names: Saito
+      given-names: Haruki
+    - family-names: Ohira
+      given-names: Tetsuya
+  journal: "Public Health"
+  year: 2026
+  notes: "Manuscript under review; update journal volume/pages and DOI when published."
+  doi: 10.5281/zenodo.20713830

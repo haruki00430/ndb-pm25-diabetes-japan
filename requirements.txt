@@ -1,0 +1,25 @@
+# Core data science
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Regression / statistics
+statsmodels>=0.14.0
+
+# Visualisation
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Configuration
+pyyaml>=6.0
+
+# Excel / DOCX I/O (used in ETL and manuscript scripts)
+openpyxl>=3.1.0
+python-docx>=1.1.0
+
+# Spatial analysis (optional — used by ETL scripts for station matching)
+# geopandas>=0.14.0
+# pysal>=23.7
+
+# NDB library (local package — install separately)
+# pip install -e .

@@ -136,8 +136,7 @@ def save_scatter_with_ci(
     title: str,
     out_path: Path,
 ) -> None:
-    """散布図＋OLS回帰直線（95%CI）を保存します。"""
-    set_japanese_font()
+    """Scatter plot with OLS regression line and 95% CI."""
     sns.set_style("whitegrid")
 
     fig, ax = plt.subplots(figsize=(7.2, 5.4))
@@ -213,9 +212,35 @@ def save_diagnostics_4panel(
     plt.close(fig)
 
 
+_PREF_ROMAJI = {
+    '北海道': 'Hokkaido', '青森': 'Aomori', '岩手': 'Iwate', '宮城': 'Miyagi',
+    '秋田': 'Akita', '山形': 'Yamagata', '福島': 'Fukushima', '茨城': 'Ibaraki',
+    '栃木': 'Tochigi', '群馬': 'Gunma', '埼玉': 'Saitama', '千葉': 'Chiba',
+    '東京': 'Tokyo', '神奈川': 'Kanagawa', '新潟': 'Niigata', '富山': 'Toyama',
+    '石川': 'Ishikawa', '福井': 'Fukui', '山梨': 'Yamanashi', '長野': 'Nagano',
+    '岐阜': 'Gifu', '静岡': 'Shizuoka', '愛知': 'Aichi', '三重': 'Mie',
+    '滋賀': 'Shiga', '京都': 'Kyoto', '大阪': 'Osaka', '兵庫': 'Hyogo',
+    '奈良': 'Nara', '和歌山': 'Wakayama', '鳥取': 'Tottori', '島根': 'Shimane',
+    '岡山': 'Okayama', '広島': 'Hiroshima', '山口': 'Yamaguchi', '徳島': 'Tokushima',
+    '香川': 'Kagawa', '愛媛': 'Ehime', '高知': 'Kochi', '福岡': 'Fukuoka',
+    '佐賀': 'Saga', '長崎': 'Nagasaki', '熊本': 'Kumamoto', '大分': 'Oita',
+    '宮崎': 'Miyazaki', '鹿児島': 'Kagoshima', '沖縄': 'Okinawa',
+}
+
+
+def _to_romaji(name: str) -> str:
+    """日本語都道府県名をローマ字に変換します。"""
+    if name in _PREF_ROMAJI:
+        return _PREF_ROMAJI[name]
+    for suffix in ('県', '都', '道', '府'):
+        stripped = name.replace(suffix, '')
+        if stripped in _PREF_ROMAJI:
+            return _PREF_ROMAJI[stripped]
+    return name
+
+
 def save_stations_plot(df: pd.DataFrame, out_path: Path) -> None:
-    """PM2.5測定局数の都道府県別分布を可視化します。"""
-    set_japanese_font()
+    """PM2.5 monitoring station counts by prefecture."""
     sns.set_style("whitegrid")
 
     if "PM25_N_Stations" not in df.columns:
@@ -223,14 +248,15 @@ def save_stations_plot(df: pd.DataFrame, out_path: Path) -> None:
         return
 
     plot_df = df[["prefecture_name", "PM25_N_Stations"]].copy()
+    plot_df["prefecture_en"] = plot_df["prefecture_name"].map(_to_romaji)
     plot_df = plot_df.sort_values("PM25_N_Stations", ascending=False)
 
     fig, ax = plt.subplots(figsize=(10.5, 9.5))
-    ax.barh(plot_df["prefecture_name"], plot_df["PM25_N_Stations"], color="slategray", edgecolor="black", linewidth=0.3)
+    ax.barh(plot_df["prefecture_en"], plot_df["PM25_N_Stations"], color="slategray", edgecolor="black", linewidth=0.3)
     ax.invert_yaxis()
-    ax.set_xlabel("測定局数（PM2.5）")
-    ax.set_ylabel("都道府県")
-    ax.set_title("都道府県別 PM2.5 測定局数（曝露評価の偏在の可視化）", fontweight="bold")
+    ax.set_xlabel("Number of PM2.5 monitoring stations")
+    ax.set_ylabel("Prefecture")
+    ax.set_title("PM2.5 Monitoring Stations by Prefecture (N = 47)", fontweight="bold")
     fig.tight_layout()
     fig.savefig(out_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
@@ -406,9 +432,9 @@ def main() -> None:
         df=df,
         x="PM25_Mean",
         y="HbA1c_Mean",
-        xlabel="PM2.5年平均濃度（μg/m³）",
-        ylabel="HbA1c平均値（%）",
-        title="PM2.5 と HbA1c（都道府県別）",
+        xlabel="Annual mean PM2.5 (μg/m³)",
+        ylabel="Mean HbA1c (%)",
+        title="PM2.5 vs. Mean HbA1c (47 Japanese Prefectures)",
         out_path=scatter1,
     )
 
@@ -417,9 +443,9 @@ def main() -> None:
         df=df,
         x="PM25_Mean",
         y="Diabetes_Prescription_Per100k",
-        xlabel="PM2.5年平均濃度（μg/m³）",
-        ylabel="糖尿病用剤処方数（/10万人）",
-        title="PM2.5 と 糖尿病用剤処方数（都道府県別）",
+        xlabel="Annual mean PM2.5 (μg/m³)",
+        ylabel="Diabetes medication prescriptions (per 100,000)",
+        title="PM2.5 vs. Diabetes Medication Prescriptions (47 Japanese Prefectures)",
         out_path=scatter2,
     )
 

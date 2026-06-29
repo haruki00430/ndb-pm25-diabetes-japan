@@ -24,6 +24,15 @@ ENV/
 *.sqlite
 *.db
 
+# Allow public release dataset
+!data/release/
+!data/release/*.csv
+!data/release/README.md
+
+# Internal dev artifacts (not for public release)
+HANDOVER.md
+scriptsstatic_tables_output.md
+
 *.log
 05_Outputs/figures/
 05_Outputs/reports/

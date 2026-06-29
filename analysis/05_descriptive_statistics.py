@@ -170,19 +170,16 @@ def create_histograms(df: pd.DataFrame, output_file: Path):
     """
     logger.info('Creating histograms')
 
-    # Set Japanese font
-    set_japanese_font()
-
     # Select main variables
     main_vars = [
-        ('PM25_Mean', 'PM2.5年平均濃度 (μg/m³)'),
-        ('HbA1c_Mean', 'HbA1c平均値 (%)'),
-        ('Diabetes_Prescription_Per100k', '糖尿病用剤処方数 (per 100k)'),
-        ('Aging_Rate', '高齢化率 (%)'),
-        ('Obesity_Rate', 'BMI肥満率 (%)'),
-        ('Smoking_Rate', '喫煙率 (%)'),
-        ('Exercise_Rate', '運動習慣率 (%)'),
-        ('GDP_Per_Capita', '1人あたり県内総生産 (万円)')
+        ('PM25_Mean', 'Annual Mean PM2.5 (μg/m³)'),
+        ('HbA1c_Mean', 'Mean HbA1c (%)'),
+        ('Diabetes_Prescription_Per100k', 'Diabetes Medication Prescriptions (per 100k)'),
+        ('Aging_Rate', 'Aging Rate (%)'),
+        ('Obesity_Rate', 'Obesity Rate (%)'),
+        ('Smoking_Rate', 'Smoking Rate (%)'),
+        ('Exercise_Rate', 'Exercise Habit Rate (%)'),
+        ('GDP_Per_Capita', 'GDP per Capita (10,000 JPY)')
     ]
 
     # Create figure with subplots
@@ -193,15 +190,15 @@ def create_histograms(df: pd.DataFrame, output_file: Path):
         ax = axes[i]
         ax.hist(df[var], bins=15, color='steelblue', edgecolor='black', alpha=0.7)
         ax.set_xlabel(label, fontsize=10)
-        ax.set_ylabel('都道府県数', fontsize=10)
-        ax.set_title(f'{label}の分布', fontsize=11, fontweight='bold')
+        ax.set_ylabel('Number of Prefectures', fontsize=10)
+        ax.set_title(f'Distribution of {label}', fontsize=11, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
 
         # Add mean and median lines
         mean_val = df[var].mean()
         median_val = df[var].median()
-        ax.axvline(mean_val, color='red', linestyle='--', linewidth=1.5, label=f'平均: {mean_val:.2f}')
-        ax.axvline(median_val, color='green', linestyle='-.', linewidth=1.5, label=f'中央値: {median_val:.2f}')
+        ax.axvline(mean_val, color='red', linestyle='--', linewidth=1.5, label=f'Mean: {mean_val:.2f}')
+        ax.axvline(median_val, color='green', linestyle='-.', linewidth=1.5, label=f'Median: {median_val:.2f}')
         ax.legend(fontsize=8)
 
     # Remove empty subplot
@@ -224,9 +221,6 @@ def create_correlation_heatmap(corr_matrix: pd.DataFrame, output_file: Path):
     """
     logger.info('Creating correlation heatmap')
 
-    # Set Japanese font
-    set_japanese_font()
-
     # Create figure
     fig, ax = plt.subplots(figsize=(12, 10))
 
@@ -234,12 +228,12 @@ def create_correlation_heatmap(corr_matrix: pd.DataFrame, output_file: Path):
     label_mapping = {
         'PM25_Mean': 'PM2.5',
         'HbA1c_Mean': 'HbA1c',
-        'Diabetes_Prescription_Per100k': '糖尿病用剤',
-        'Aging_Rate': '高齢化率',
-        'Obesity_Rate': '肥満率',
-        'Smoking_Rate': '喫煙率',
-        'Exercise_Rate': '運動習慣',
-        'GDP_Per_Capita': 'GDP/人'
+        'Diabetes_Prescription_Per100k': 'Diabetes Rx',
+        'Aging_Rate': 'Aging Rate',
+        'Obesity_Rate': 'Obesity Rate',
+        'Smoking_Rate': 'Smoking Rate',
+        'Exercise_Rate': 'Exercise Rate',
+        'GDP_Per_Capita': 'GDP/capita'
     }
 
     corr_display = corr_matrix.rename(index=label_mapping, columns=label_mapping)
@@ -255,11 +249,11 @@ def create_correlation_heatmap(corr_matrix: pd.DataFrame, output_file: Path):
         vmax=1,
         square=True,
         linewidths=0.5,
-        cbar_kws={'label': 'Pearson相関係数'},
+        cbar_kws={'label': 'Pearson Correlation'},
         ax=ax
     )
 
-    ax.set_title('都道府県別データの相関行列', fontsize=14, fontweight='bold', pad=20)
+    ax.set_title('Correlation Matrix of Prefecture-Level Variables', fontsize=14, fontweight='bold', pad=20)
 
     plt.tight_layout()
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
@@ -278,9 +272,6 @@ def create_scatterplot_matrix(df: pd.DataFrame, output_file: Path):
     """
     logger.info('Creating scatterplot matrix')
 
-    # Set Japanese font
-    set_japanese_font()
-
     # Select key variables for scatterplot matrix
     key_vars = ['PM25_Mean', 'HbA1c_Mean', 'Diabetes_Prescription_Per100k', 'Aging_Rate']
 
@@ -296,8 +287,8 @@ def create_scatterplot_matrix(df: pd.DataFrame, output_file: Path):
     label_mapping = {
         'PM25_Mean': 'PM2.5 (μg/m³)',
         'HbA1c_Mean': 'HbA1c (%)',
-        'Diabetes_Prescription_Per100k': '糖尿病用剤 (per 100k)',
-        'Aging_Rate': '高齢化率 (%)'
+        'Diabetes_Prescription_Per100k': 'Diabetes Rx (per 100k)',
+        'Aging_Rate': 'Aging Rate (%)'
     }
 
     for i in range(len(key_vars)):
@@ -308,7 +299,7 @@ def create_scatterplot_matrix(df: pd.DataFrame, output_file: Path):
             if j == 0:
                 ax.set_ylabel(label_mapping[key_vars[i]], fontsize=10)
 
-    g.fig.suptitle('主要変数の散布図行列', y=1.01, fontsize=14, fontweight='bold')
+    g.fig.suptitle('Scatterplot Matrix of Key Variables', y=1.01, fontsize=14, fontweight='bold')
 
     plt.tight_layout()
     plt.savefig(output_file, dpi=300, bbox_inches='tight')

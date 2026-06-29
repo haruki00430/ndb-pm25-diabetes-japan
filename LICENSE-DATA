@@ -1,0 +1,36 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+This license applies to the aggregated prefecture-level dataset in `data/release/`.
+
+本ライセンスは `data/release/` 内の集計データ（都道府県別集計値）に適用されます。
+
+You are free to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material for any purpose, even commercially
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license,
+  and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/
+
+---
+
+Attribution / 引用:
+
+Saito H, Ohira T. Ecological Detectability Boundaries in Nationwide Administrative
+Data: Lessons from a PM2.5-Diabetes Case Study in Japan. Public Health. 2026 (under review).
+Zenodo: https://doi.org/10.5281/zenodo.20713830
+
+---
+
+Note / 注記:
+
+The aggregated data in `data/release/` are derived from publicly available sources
+(NDB Open Data, NIES atmospheric monitoring, e-Stat, Cabinet Office).
+No individual-level data are included. The raw NDB Open Data remain subject to
+the terms of use of the Ministry of Health, Labour and Welfare.
+
+`data/release/` 内のデータは公開データ（NDBオープンデータ、大気汚染常時監視データ等）から
+都道府県単位に集計したものです。個人を特定できる情報は含まれていません。
+生の NDB データは厚生労働省の利用規約に従います。

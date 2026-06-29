@@ -32,8 +32,6 @@ except ImportError:
     from ndb_library.viz import set_japanese_font
     from ndb_library.logger import setup_logger
 
-set_japanese_font()
-
 # ============================
 # 設定
 # ============================
@@ -139,7 +137,7 @@ def plot_power_curves(k: int, alpha: float, output_path: Path):
 
     fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharey=True)
     fig.suptitle(
-        "統計的検出力曲線\nPM2.5×糖尿病研究（NDB_XXX_PM25_diabetes）",
+        "Statistical Power Curves\nPM2.5 and Diabetes Study (NDB_XXX_PM25_diabetes)",
         fontsize=13, fontweight='bold'
     )
 
@@ -153,7 +151,7 @@ def plot_power_curves(k: int, alpha: float, output_path: Path):
 
     model_info = [
         (axes[0], "Model 1: HbA1c_Mean", R2_MODEL1),
-        (axes[1], "Model 2: 糖尿病処方薬/10万人", R2_MODEL2),
+        (axes[1], "Model 2: Diabetes Medication (per 100,000)", R2_MODEL2),
     ]
 
     for ax, title, r2 in model_info:
@@ -168,14 +166,14 @@ def plot_power_curves(k: int, alpha: float, output_path: Path):
         # 観察された効果量（モデルの R^2 相当）
         obs_powers = [power_ols(f2_obs, n, k, alpha) for n in n_range]
         ax.plot(n_range, obs_powers, color='#e67700', linestyle='-', linewidth=2.5,
-                label=f"観察 f²={f2_obs:.3f} (R²={r2:.3f})")
+                label=f"Observed f²={f2_obs:.3f} (R²={r2:.3f})")
 
         # 現在の N=47 を縦線でマーク
         power_at_47 = power_ols(f2_obs, N_OBS, k, alpha)
         ax.axvline(x=N_OBS, color='#495057', linestyle=':', linewidth=1.5)
         ax.axhline(y=TARGET_POWER, color='#495057', linestyle=':', linewidth=1.5)
         ax.annotate(
-            f"N={N_OBS}\n検出力={power_at_47:.0%}",
+            f"N={N_OBS}\nPower={power_at_47:.0%}",
             xy=(N_OBS, power_at_47),
             xytext=(N_OBS + 8, power_at_47 - 0.08),
             fontsize=9,
@@ -184,8 +182,8 @@ def plot_power_curves(k: int, alpha: float, output_path: Path):
         )
 
         ax.set_title(title, fontsize=11)
-        ax.set_xlabel("サンプルサイズ N（都道府県数）", fontsize=10)
-        ax.set_ylabel("統計的検出力 (Power)", fontsize=10)
+        ax.set_xlabel("Sample size N (number of prefectures)", fontsize=10)
+        ax.set_ylabel("Statistical Power", fontsize=10)
         ax.set_ylim(0, 1.02)
         ax.set_xlim(20, 200)
         ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1.0, decimals=0))
