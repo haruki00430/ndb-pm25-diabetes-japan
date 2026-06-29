@@ -32,6 +32,24 @@ ENV/
 # Internal dev artifacts (not for public release)
 HANDOVER.md
 scriptsstatic_tables_output.md
+scripts/citation_mapping.txt
+scripts/ref_mapping_final.txt
+scripts/static_tables_output.md
+
+# Manuscript drafts, backups, and auto-generated files
+04_Manuscripts/*.backup
+04_Manuscripts/*.backup_*
+04_Manuscripts/*_converted.qmd
+04_Manuscripts/*_final.qmd
+04_Manuscripts/*_placeholder*.qmd
+04_Manuscripts/*_reversed.qmd
+04_Manuscripts/*_step1.qmd
+04_Manuscripts/citation_verification_report.md
+04_Manuscripts/preprint_migration_diffpoints.json
+04_Manuscripts/references_manual*.txt
+04_Manuscripts/*.html
+04_Manuscripts/*.docx
+04_Manuscripts/*.pdf
 
 *.log
 05_Outputs/figures/
